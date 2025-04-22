@@ -281,6 +281,15 @@
                     summaryLoaded = true; // Mark as loaded if data is already present
                 }
             });
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('summaryDate');
+            const today = new Date();
+            const todayFormatted = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+            dateInput.setAttribute('max', todayFormatted);
+            });
+
         </script>
     </body>
 </html>
