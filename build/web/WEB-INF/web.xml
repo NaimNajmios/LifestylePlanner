@@ -8,6 +8,10 @@
         <servlet-name>NutritionixData</servlet-name>
         <servlet-class>NutritionixData</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NutritionSummary</servlet-name>
+        <servlet-class>NutritionSummary</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NutritionServlet</servlet-name>
         <url-pattern>/NutritionServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>NutritionixData</servlet-name>
         <url-pattern>/NutritionixData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NutritionSummary</servlet-name>
+        <url-pattern>/NutritionSummary</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
