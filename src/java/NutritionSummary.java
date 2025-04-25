@@ -1,3 +1,4 @@
+
 /*
  * NutritionSummary Servlet
  * Fetches daily nutrition data for a given date and forwards to index.jsp
@@ -44,11 +45,11 @@ public class NutritionSummary extends HttpServlet {
         if (intakeList == null || intakeList.isEmpty()) {
             // If the list is empty, set an error message
             request.setAttribute("errorMessage", "No nutrition information found for the selected date.");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp?activeTab=summary").forward(request, response);
         } else {
             // If the list is not empty, set the list as an attribute
             request.setAttribute("intakeList", intakeList);
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp?activeTab=summary").forward(request, response);
         }
     }
 
