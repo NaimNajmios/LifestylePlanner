@@ -21,7 +21,6 @@
     <body>
         <div class="container">
             <h2 class="mb-4">Nutritionix Food Tracker</h2>
-
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="input-tab" data-toggle="tab" href="#input" role="tab" aria-controls="input" aria-selected="true">Input</a>
@@ -64,7 +63,7 @@
                     <form action="NutritionSummary" method="post" id="summaryForm">
                         <div class="form-group">
                             <label for="summaryDate">Select Date:</label>
-                            <input type="date" class="form-control w-25 d-inline-block" id="summaryDate" name="summaryDate">
+                            <input type="date" class="form-control w-25 d-inline-block" id="summaryDate" name="summaryDate" required>
                             <button type="submit" class="btn btn-primary ml-2">Load Summary</button>
                         </div>
                     </form>

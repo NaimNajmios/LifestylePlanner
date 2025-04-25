@@ -101,7 +101,7 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('summaryDate');
     const today = new Date();
-    const todayFormatted = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const todayFormatted = today.toISOString().split('T')[0]; // Get today's date in<ctrl3348>-MM-DD format
 
     dateInput.setAttribute('max', todayFormatted);
 });
