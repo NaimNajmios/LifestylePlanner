@@ -9,108 +9,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Nutritionix Food Tracker</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <style>
-            body {
-                background-color: #f8f9fa; /* Light gray background for the page */
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-            }
-            .container {
-                background-color: #ffffff; /* White background for the container */
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-                padding: 30px;
-                margin-top: 50px;
-                margin-bottom: 50px;
-            }
-            h2, h3, h5 {
-                color: #343a40; /* Dark gray for headings */
-            }
-            .nav-tabs .nav-link {
-                font-weight: 500;
-                color: #495057; /* Slightly lighter gray for tab links */
-                border: none;
-                border-bottom: 2px solid transparent;
-                transition: all 0.3s ease;
-            }
-            .nav-tabs .nav-link:hover {
-                border-bottom: 2px solid #007bff; /* Blue underline on hover */
-                color: #007bff;
-            }
-            .nav-tabs .nav-link.active {
-                color: #007bff; /* Active tab in blue */
-                border-bottom: 2px solid #007bff;
-            }
-            .tab-content > .tab-pane {
-                display: none; /* Initially hide all panes */
-            }
-            .tab-content > .active {
-                display: block; /* Show the active pane */
-            }
-            .form-group label {
-                font-weight: 500;
-                color: #495057;
-            }
-            .form-control {
-                border-radius: 5px;
-                border: 1px solid #ced4da;
-                transition: border-color 0.3s ease;
-            }
-            .form-control:focus {
-                border-color: #007bff;
-                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle blue glow on focus */
-            }
-            .btn-primary {
-                background-color: #007bff;
-                border-color: #007bff;
-                border-radius: 5px;
-                padding: 10px 20px;
-                font-weight: 500;
-                transition: background-color 0.3s ease;
-            }
-            .btn-primary:hover {
-                background-color: #0056b3;
-                border-color: #0056b3;
-            }
-            .table th {
-                cursor: pointer; /* Indicate that the column is sortable */
-                background-color: #343a40; /* Dark header background */
-                color: #ffffff; /* White text for headers */
-                font-weight: 500;
-            }
-            .table th:hover {
-                background-color: #495057; /* Slightly lighter on hover */
-            }
-            .table td {
-                vertical-align: middle; /* Center-align table data */
-            }
-            .table-striped tbody tr:nth-of-type(odd) {
-                background-color: #f8f9fa; /* Light gray for odd rows */
-            }
-            .total-section {
-                background-color: #e9ecef; /* Light gray background for totals */
-                border-radius: 5px;
-                padding: 15px;
-                margin-top: 20px;
-            }
-            .total-section p {
-                margin: 0;
-                font-size: 1.1rem;
-                color: #343a40;
-            }
-            .total-section span {
-                font-weight: bold;
-                color: #007bff; /* Blue for total values */
-            }
-            .nutrition-info {
-                background-color: #ffffff;
-                border: 1px solid #dee2e6;
-                border-radius: 5px;
-                padding: 20px;
-                margin-top: 30px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            }
-        </style>
+        <%-- Prevent caching --%>
+        <%
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+        %>
+        <%-- Include styling --%>
+        <%@ include file="../include/nutritionix-styling.html" %>
     </head>
     <body>
         <div class="container">
@@ -163,7 +69,9 @@
                         </div>
                     </form>
                     <div id="summaryTable">
-                        <% if (request.getAttribute("intakeList") != null) { %>
+                        <% if (request.getAttribute("errorMessage") != null) {%>
+                        <p class="text-danger"><%= request.getAttribute("errorMessage")%></p>
+                        <% } else if (request.getAttribute("intakeList") != null && !((List<Intake>) request.getAttribute("intakeList")).isEmpty()) { %>
                         <table class="table table-striped table-bordered">
                             <thead class="thead-dark">
                                 <tr>
@@ -207,7 +115,7 @@
                             </p>
                         </div>
                         <% } else { %>
-                        <p>No food logged for this date.</p>
+                        <p>No food logged for this date. Try selecting another date or adding food in the Input tab.</p>
                         <% } %>
                     </div>
                 </div>
@@ -220,76 +128,8 @@
             <p><%= request.getAttribute("intake")%></p>
         </div>
         <% }%>
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                // Set today's date as the default value for the date input
-                const today = new Date();
-                const formattedToday = today.getFullYear() + '-' +
-                        String(today.getMonth() + 1).padStart(2, '0') + '-' +
-                        String(today.getDate()).padStart(2, '0');
-                $('#summaryDate').val(formattedToday);
-
-                // Flag to track if the summary has been loaded
-                let summaryLoaded = false;
-
-                // Tab navigation
-                $('#myTab a').on('click', function (e) {
-                    e.preventDefault();
-                    $(this).tab('show');
-
-                    // Auto-submit the form when the Summary tab is clicked for the first time
-                    if ($(this).attr('id') === 'summary-tab' && !summaryLoaded) {
-                        $('#summaryForm').submit();
-                        summaryLoaded = true; // Set flag to prevent re-submission
-                    }
-                });
-
-                // Calculate totals for the "Total for the Day" section
-                function calculateTotals() {
-                    let totalCalories = 0;
-                    let totalProtein = 0;
-                    let totalCarbs = 0;
-                    let totalFat = 0;
-
-                    // Iterate over each row in the table body
-                    $('#summaryBody tr').each(function () {
-                        const calories = parseFloat($(this).find('.calories').text()) || 0;
-                        const protein = parseFloat($(this).find('.protein').text()) || 0;
-                        const carbs = parseFloat($(this).find('.carbs').text()) || 0;
-                        const fat = parseFloat($(this).find('.fat').text()) || 0;
-
-                        totalCalories += calories;
-                        totalProtein += protein;
-                        totalCarbs += carbs;
-                        totalFat += fat;
-                    });
-
-                    // Update the totals in the UI (rounded to 1 decimal place)
-                    $('#totalCalories').text(totalCalories.toFixed(1));
-                    $('#totalProtein').text(totalProtein.toFixed(1));
-                    $('#totalCarbs').text(totalCarbs.toFixed(1));
-                    $('#totalFat').text(totalFat.toFixed(1));
-                }
-
-                // Call calculateTotals on page load if the table exists
-                if ($('#summaryBody').length) {
-                    calculateTotals();
-                    summaryLoaded = true; // Mark as loaded if data is already present
-                }
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-            const dateInput = document.getElementById('summaryDate');
-            const today = new Date();
-            const todayFormatted = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-
-            dateInput.setAttribute('max', todayFormatted);
-            });
-
-        </script>
     </body>
+
+    <%-- Include JS --%>
+    <%@ include file="../include/nutritionix-js.html" %>
 </html>
