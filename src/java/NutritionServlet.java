@@ -52,9 +52,11 @@ public class NutritionServlet extends HttpServlet {
         System.out.println("Quantity: " + intake.getQuantity());
         System.out.println("Meal Type: " + intake.getMealType());
         System.out.println("Remark: " + intake.getRemark());
+        
+        String fullFoodQuery = quantity + " of " + foodQuery;
 
         // Get the nutrition information for the food query
-        nutritionix.setFoodQuery(foodQuery);
+        nutritionix.setFoodQuery(fullFoodQuery);
         Intake intakeInfo = nutritionix.getNutritionInfo();
 
         // Set the nutrition information in the Intake object
