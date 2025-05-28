@@ -71,7 +71,6 @@
                             <input type="date" class="form-control w-25 d-inline-block" id="summaryDate" name="summaryDate" required>
                             <button type="submit" class="btn btn-primary ml-2">Load Summary</button>
                         </div>
-                        
                     </form>
                     <div id="summaryTable">
                         <% if (request.getAttribute("errorMessage") != null) {%>
@@ -131,32 +130,44 @@
             Intake intake = (Intake) request.getAttribute("intake");
         %>
         <div class="container mt-4 mb-4">
-            <div class="card nutrition-info">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Nutrition Information</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Food Details</h5>
-                            <p><strong>Food:</strong> <%= intake.getFoodQuery()%></p>
-                            <p><strong>Quantity:</strong> <%= intake.getQuantity()%></p>
-                            <p><strong>Meal Type:</strong> <%= intake.getMealType()%></p>
-                            <% if (intake.getRemark() != null && !intake.getRemark().isEmpty()) { %>
-                                <p><strong>Remarks:</strong> <%= intake.getRemark()%></p>
-                            <% } %>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Nutritional Values</h5>
-                            <div class="nutrition-values">
-                                <p><strong>Calories:</strong> <%= intake.getCalories()%> kcal</p>
-                                <p><strong>Protein:</strong> <%= intake.getProtein()%>g</p>
-                                <p><strong>Carbs:</strong> <%= intake.getCarbs()%>g</p>
-                                <p><strong>Fat:</strong> <%= intake.getFat()%>g</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <h4>Nutrition Information for Last Added Item:</h4>
+            <div class="form-group">
+                <label>Food:</label>
+                <input type="text" class="form-control" value="<%= intake.getFoodQuery()%>" readonly>
+            </div>
+            <div class="form-group">
+                <label>Quantity:</label>
+                <input type="text" class="form-control" value="<%= intake.getQuantity()%>" readonly>
+            </div>
+            <div class="form-group">
+                <label>Meal Type:</label>
+                <input type="text" class="form-control" value="<%= intake.getMealType()%>" readonly>
+            </div>
+            <% if (intake.getRemark() != null && !intake.getRemark().isEmpty()) { %>
+            <div class="form-group">
+                <label>Remarks:</label>
+                <textarea class="form-control" rows="3" readonly><%= intake.getRemark()%></textarea>
+            </div>
+            <% } %>
+
+            <hr>
+
+            <h5>Nutritional Values:</h5>
+            <div class="form-group">
+                <label>Calories:</label>
+                <input type="text" class="form-control" value="<%= intake.getCalories()%> kcal" readonly>
+            </div>
+            <div class="form-group">
+                <label>Protein:</label>
+                <input type="text" class="form-control" value="<%= intake.getProtein()%>g" readonly>
+            </div>
+            <div class="form-group">
+                <label>Carbs:</label>
+                <input type="text" class="form-control" value="<%= intake.getCarbs()%>g" readonly>
+            </div>
+            <div class="form-group">
+                <label>Fat:</label>
+                <input type="text" class="form-control" value="<%= intake.getFat()%>g" readonly>
             </div>
         </div>
         <% }%>
