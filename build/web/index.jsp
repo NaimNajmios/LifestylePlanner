@@ -9,7 +9,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nutritionix Food Tracker</title>
+        <title>Food Nutrition Tracker</title>
         <%-- Prevent caching --%>
         <%
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -25,7 +25,7 @@
     </head>
     <body>
         <div class="container">
-            <h2 class="mb-4">Nutritionix Food Tracker</h2>
+            <h2 class="mb-4">Food Nutrition Tracker</h2>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link <%= !summaryActive ? "active" : ""%>" id="input-tab" data-toggle="tab" href="#input" role="tab" aria-controls="input" aria-selected="<%= !summaryActive ? "true" : "false"%>">Input</a>
@@ -71,6 +71,7 @@
                             <input type="date" class="form-control w-25 d-inline-block" id="summaryDate" name="summaryDate" required>
                             <button type="submit" class="btn btn-primary ml-2">Load Summary</button>
                         </div>
+                        
                     </form>
                     <div id="summaryTable">
                         <% if (request.getAttribute("errorMessage") != null) {%>
@@ -126,10 +127,37 @@
             </div>
         </div>
 
-        <% if (request.getAttribute("intake") != null) {%>
-        <div class="container nutrition-info">
-            <h3>Nutrition Information</h3>
-            <p><%= request.getAttribute("intake")%></p>
+        <% if (request.getAttribute("intake") != null) {
+            Intake intake = (Intake) request.getAttribute("intake");
+        %>
+        <div class="container mt-4 mb-4">
+            <div class="card nutrition-info">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Nutrition Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Food Details</h5>
+                            <p><strong>Food:</strong> <%= intake.getFoodQuery()%></p>
+                            <p><strong>Quantity:</strong> <%= intake.getQuantity()%></p>
+                            <p><strong>Meal Type:</strong> <%= intake.getMealType()%></p>
+                            <% if (intake.getRemark() != null && !intake.getRemark().isEmpty()) { %>
+                                <p><strong>Remarks:</strong> <%= intake.getRemark()%></p>
+                            <% } %>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Nutritional Values</h5>
+                            <div class="nutrition-values">
+                                <p><strong>Calories:</strong> <%= intake.getCalories()%> kcal</p>
+                                <p><strong>Protein:</strong> <%= intake.getProtein()%>g</p>
+                                <p><strong>Carbs:</strong> <%= intake.getCarbs()%>g</p>
+                                <p><strong>Fat:</strong> <%= intake.getFat()%>g</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <% }%>
     </body>

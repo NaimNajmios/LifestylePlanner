@@ -23,8 +23,12 @@ public class DatabaseAccessObject {
         db = new DatabaseConnection();
     }
 
-    // Method to insert intake into the database, return boolean
+    // Inside Database.DatabaseAccessObject
+// Method to insert intake into the database, return boolean
     public boolean insertIntake(Intake intake) {
+        java.sql.Connection connection = null; // Declare connection locally for try-with-resources
+        java.sql.PreparedStatement preparedStatement = null; // Declare preparedStatement locally
+
         try {
             connection = db.getConnection();
 
@@ -33,7 +37,7 @@ public class DatabaseAccessObject {
                 System.out.println("Intake object is null.");
                 return false;
             } else {
-                System.out.println(intake);
+                System.out.println(intake); // This will call Intake's toString()
             }
 
             // Preparedstatement
@@ -45,7 +49,11 @@ public class DatabaseAccessObject {
             preparedStatement.setDouble(4, intake.getProtein());
             preparedStatement.setDouble(5, intake.getCarbs());
             preparedStatement.setDouble(6, intake.getFat());
-            preparedStatement.setDate(7, (java.sql.Date) new Date(intake.getDateConsumed().getTime())); // Use java.sql.Date
+
+            // Convert java.util.Date to java.sql.Date for database storage
+            java.sql.Date sqlDate = new java.sql.Date(intake.getDateConsumed().getTime());
+            preparedStatement.setDate(7, sqlDate);
+
             preparedStatement.setString(8, intake.getMealType());
             preparedStatement.setString(9, intake.getRemark());
 
@@ -62,9 +70,14 @@ public class DatabaseAccessObject {
             e.printStackTrace();
             return false;
         } finally {
+            // Use try-with-resources or close connections properly
             try {
-                preparedStatement.close();
-                connection.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

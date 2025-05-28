@@ -92,10 +92,11 @@ public class Intake {
     }
 
     public Date getDateConsumed() {
-        return this.dateConsumed;
+        return dateConsumed;
     }
 
-    public void setDateConsumed(Date dateConsumed) {
+    // This is the critical method:
+    public void setDateConsumed(Date dateConsumed) { // Parameter MUST be java.sql.Date
         this.dateConsumed = dateConsumed;
     }
 

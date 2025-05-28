@@ -9,7 +9,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nutritionix Food Tracker</title>
+        <title>Food Nutrition Tracker</title>
         <%-- Prevent caching --%>
         <%
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -25,7 +25,7 @@
     </head>
     <body>
         <div class="container">
-            <h2 class="mb-4">Nutritionix Food Tracker</h2>
+            <h2 class="mb-4">Food Nutrition Tracker</h2>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link <%= !summaryActive ? "active" : ""%>" id="input-tab" data-toggle="tab" href="#input" role="tab" aria-controls="input" aria-selected="<%= !summaryActive ? "true" : "false"%>">Input</a>
@@ -71,6 +71,7 @@
                             <input type="date" class="form-control w-25 d-inline-block" id="summaryDate" name="summaryDate" required>
                             <button type="submit" class="btn btn-primary ml-2">Load Summary</button>
                         </div>
+                        
                     </form>
                     <div id="summaryTable">
                         <% if (request.getAttribute("errorMessage") != null) {%>
